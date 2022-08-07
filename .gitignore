@@ -1,0 +1,6 @@
+.DS_STORE
+.import/
+Scripts/venv/
+Scripts/.idea
+*.json
+*.import
