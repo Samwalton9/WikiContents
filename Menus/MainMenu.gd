@@ -12,3 +12,8 @@ func _on_StartButton_button_down():
 
 func _on_StartButton_button_up():
 	startButton.rect_position -= Vector2(2,2)
+
+
+func _on_Github_meta_clicked(meta):
+	var github_url = "https://github.com/Samwalton9/WikiContents"
+	OS.shell_open(github_url)
