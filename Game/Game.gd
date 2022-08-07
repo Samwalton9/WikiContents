@@ -7,10 +7,10 @@ var selected_page = ""
 const heading = preload("res://Game/Heading.tscn")
 const articleButton = preload("res://Game/ArticleButton.tscn")
 
-onready var headingsVBox = $HeadingsVBox
+onready var headingsVBox = $Container/HeadingsVBox
+onready var headingNumbersVBox = $Container/HeadingNumbersVBox
 onready var answerGrid = $AnswerGrid
-onready var score = $Score
-onready var lives = $Lives
+onready var scoreAnimationPlayer = $Score/AnimationPlayer
 
 
 func _ready():
@@ -21,11 +21,17 @@ func _ready():
 	selected_page = get_random_page_not_in_list(page_data, ProgressTracking.pages_seen)
 	var sections = page_data[selected_page]
 
-	for section in sections:
+	for section_number in sections.size():
 		var heading_entry = heading.instance()
 		headingsVBox.add_child(heading_entry)
 
+		var section = sections[section_number]
 		heading_entry.set_heading_text(section)
+
+		var heading_number = heading.instance()
+		headingNumbersVBox.add_child(heading_number)
+		heading_number.set_heading_text(str(section_number+1))
+		heading_number.set_label_color(Color(0,0,0))
 
 	# Generate list of options, including correct answer, without duplicates
 	var answer_options = [selected_page]
@@ -35,24 +41,14 @@ func _ready():
 		answer_options.append(rand_page)
 	answer_options.shuffle()
 
-	# TODO: Button should be text on a blank button so it can overflow
 	for answer_option in answer_options:
 		var new_button = articleButton.instance()
 		answerGrid.add_child(new_button)
-
-		new_button.text = answer_option
-
-		new_button.connect("pressed", self, "_on_answer_pressed", [answer_option])
-
-	update_score_and_lives()
+		new_button.set_label_text(answer_option)
 
 	ProgressTracking.pages_seen.append(selected_page)
 
-
-func update_score_and_lives():
-	# Set score and lives labels
-	score.text = "Score: " + str(ProgressTracking.score)
-	lives.text = "Lives: " + str(ProgressTracking.lives)
+	Events.connect("button_pressed", self, "_on_answer_pressed")
 
 
 func get_random_key(dictionary):
@@ -64,13 +60,9 @@ func get_random_key(dictionary):
 
 func _on_answer_pressed(page_title):
 	if page_title == selected_page:
-		ProgressTracking.score += 1
-		get_tree().reload_current_scene()
+		$Score.increase_score()
 	else:
-		ProgressTracking.lives -= 1
-
-	update_score_and_lives()
-
+		$Lives.decrease_lives()
 
 func get_random_page_not_in_list(page_json, avoid_list):
 	var find_new_title = true
@@ -82,3 +74,4 @@ func get_random_page_not_in_list(page_json, avoid_list):
 			find_new_title = false
 
 	return rand_page_title
+

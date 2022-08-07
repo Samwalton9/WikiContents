@@ -12,7 +12,7 @@ random_pages_url = "https://{lang}.wikipedia.org/w/api.php?action=query&format=j
 )
 
 random_pages_list = []
-for i in range(20):
+for i in range(5):
     r = requests.get(random_pages_url)
     random_pages = r.json()
     random_pages_list.extend(random_pages['query']['random'])

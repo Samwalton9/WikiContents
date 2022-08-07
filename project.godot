@@ -16,6 +16,7 @@ run/main_scene="res://Menus/MainMenu.tscn"
 [autoload]
 
 ProgressTracking="*res://ProgressTracking.gd"
+Events="*res://Events.gd"
 
 [gui]
 
