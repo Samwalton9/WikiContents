@@ -57,7 +57,7 @@ margin_left = 27.0
 margin_top = 565.0
 margin_right = 67.0
 margin_bottom = 586.0
-text = "v0.1.2"
+text = "v0.1.3"
 
 [node name="Github" type="RichTextLabel" parent="."]
 margin_left = 807.0
