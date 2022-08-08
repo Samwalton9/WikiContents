@@ -4,3 +4,4 @@ Scripts/venv/
 Scripts/.idea
 *.json
 *.import
+html_export/*
